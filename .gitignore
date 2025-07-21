@@ -1,0 +1,24 @@
+node_modules
+# Ignore environment variable files for security and configuration
+.env
+.env.local
+.env.production
+.env.development
+
+# Ignore build output directories
+dist/
+build/
+coverage/
+
+# Ignore log files
+*.log
+npm-debug.log*
+yarn-error.log*
+*.tmp
+
+# Ignore system-specific files
+.DS_Store
+
+# Ignore IDE/editor configuration directories
+.idea/
+.vscode/
