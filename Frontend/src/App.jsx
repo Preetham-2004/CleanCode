@@ -24,7 +24,7 @@ function App() {
   async function reviewCode() {
     setIsLoading(true)
     try {
-      const response = await axios.post('http://localhost:3000/ai/get-review', { code })
+      const response = await axios.post('https://cleancode-1.onrender.com', { code })
       setReview(response.data)
     } catch (error) {
       setReview('Error occurred while reviewing code. Please try again.')
