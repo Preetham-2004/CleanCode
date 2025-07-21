@@ -24,7 +24,7 @@ function App() {
   async function reviewCode() {
     setIsLoading(true)
     try {
-      const response = await axios.post('await axios.post('https://cleancode-1.onrender.com/ai/get-review', { code })
+      const response = await axios.post('https://cleancode-1.onrender.com/ai/get-review', { code })
 ', { code })
       setReview(response.data)
     } catch (error) {
