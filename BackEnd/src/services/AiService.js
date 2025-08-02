@@ -1,6 +1,13 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_KEY);
+const apiKey = process.env.GOOGLE_GEMINI_KEY;
+
+if (!apiKey) {
+  throw new Error("❌ GOOGLE_GEMINI_KEY is not defined in environment variables.");
+}
+
+const genAI = new GoogleGenerativeAI(apiKey);
+
 const model = genAI.getGenerativeModel({
   model: "gemini-2.0-flash",
   systemInstruction: `
@@ -31,55 +38,37 @@ You're an expert developer helping your younger sibling write better code. Be ho
 5. Use DRY & SOLID principles with simple examples if needed.
 6. Keep suggestions concise and to the point.
 
-📌 **Example Style**:
-
-❌ Not Ideal:
-\`\`\`js
-function fetchData() {
-  let data = fetch('/api/data').then(response => response.json());
-  return data;
-}
-\`\`\`
-
-🔍 Issues:
-• ❌ You're returning a promise without awaiting it — this can break things.
-• ❌ No error handling — what if the API fails?
-
-✅ Here's a better version:
-\`\`\`js
-async function fetchData() {
-  try {
-    const response = await fetch('/api/data');
-    if (!response.ok) throw new Error("Status: $\{response.status}");
-    return await response.json();
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    return null;
-  }
-}
-\`\`\`
-
-🧠 Why this is better:
-• ✔ Uses async/await for proper promise handling.
-• ✔ Handles errors gracefully.
-• ✔ Cleaner and more reliable.
-
 ✨ **Final Reminder**:
-Give advice that levels them up — not just to fix this code, but to grow as a developer. You’re here to build them up, like a mentor and a sibling would. Encourage, guide, and empower them to be confident in their craft.
-
-Let’s make their code not just better — but something they’re proud of.
+Give advice that levels them up — not just to fix this code, but to grow as a developer. Encourage, guide, and empower them to be confident in their craft.
 `
 });
 
-
-
+/**
+ * Generates content using Google Gemini based on a given prompt.
+ * @param {string} prompt - The user's input prompt.
+ * @returns {Promise<string>} - Formatted response from Gemini or error message.
+ */
 async function generateContent(prompt) {
+  if (!prompt || typeof prompt !== "string" || prompt.trim() === "") {
+    console.warn("⚠️ Empty or invalid prompt provided.");
+    return "⚠️ Please provide a valid prompt to generate content.";
+  }
+
+  try {
     const result = await model.generateContent(prompt);
 
-    console.log(result.response.text())
+    const response = await result.response;
+    if (!response || typeof response.text !== "function") {
+      throw new Error("❌ Unexpected Gemini API response format.");
+    }
 
-    return result.response.text();
-
+    const text = response.text();
+    console.log("✅ Gemini Response:", text);
+    return text;
+  } catch (error) {
+    console.error("❌ Error generating content:", error);
+    return "⚠️ Gemini failed to generate content. Please try again later.";
+  }
 }
 
-module.exports = generateContent    
+module.exports = generateContent;
