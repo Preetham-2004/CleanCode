@@ -3,6 +3,8 @@
 **CleanCode** is an AI-powered code review tool designed to help developers write cleaner, more efficient, and maintainable code.  
 It provides instant feedback and suggestions by analyzing your code with a powerful AI model.
 
+🔗 **[Live Demo](https://cleancode-1-fi1m.onrender.com)**
+
 ## 🚀 How It Works
 
 1. Write or paste your code into the editor on the left side of the screen.
